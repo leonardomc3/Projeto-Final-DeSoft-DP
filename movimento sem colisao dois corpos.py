@@ -1,8 +1,12 @@
-
-
 from pygame.locals import *
 import pygame
 import time
+
+
+black = (0,0,0)
+white = (255,255,255)
+green = (0,255,0)
+
 
 
 
@@ -161,6 +165,14 @@ class App:
     windowHeight = 600
     player = 0
     player2 = 0
+    _menu = True
+    
+    
+    
+    def texto(self, msg, color, tam, x, y):
+        font = pygame.font.SysFont(None, tam)
+        texto1 = font.render(msg, True, color)
+        self._display_surf.blit(texto1, [x, y])
     
     
  
@@ -184,7 +196,7 @@ class App:
         #self._apple_surf = pygame.image.load("bola-25X25.png").convert()
  
     def on_event(self, event):
-        if event.type == QUIT:
+        if event.type == pygame.QUIT:
             self._running = False
  
     def on_loop(self):
@@ -215,37 +227,63 @@ class App:
             self._running = False
  
         while( self._running ):
+            while (self._menu):
+                
+                self._display_surf.fill(black)
+                self.texto('SNAKE 2.0', green, 80, 260, 30)
+                pygame.draw.rect(self._display_surf, white, [330, 320, 135, 30])
+                self.texto('Jogar (J)', black, 30, 335, 325)
+                pygame.draw.rect(self._display_surf, white, [330, 365, 135, 30])
+                self.texto('Opções (O)', black, 30, 335, 370)
+                pygame.draw.rect(self._display_surf, white, [330, 410, 135, 30])
+                self.texto('Sair (S)', black, 30, 335, 415)
+                pygame.display.update()
+            
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self._running = False
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_s:
+                            self._menu = False
+                            self._running = False
+                        if event.key == pygame.K_j:
+                            self._menu = False
+                        if event.key == pygame.K_o:
+                            self._menu = False          
+                            
+                            
+                            
             pygame.event.pump()
             keys = pygame.key.get_pressed() 
  
-            if (keys[K_RIGHT]):
+            if (keys[pygame.K_RIGHT]):
                 self.player.moveRight()
  
-            if (keys[K_LEFT]):
+            if (keys[pygame.K_LEFT]):
                 self.player.moveLeft()
  
-            if (keys[K_UP]):
+            if (keys[pygame.K_UP]):
                 self.player.moveUp()
  
-            if (keys[K_DOWN]):
+            if (keys[pygame.K_DOWN]):
                 self.player.moveDown()
             
             
-            if (keys[K_d]):
+            if (keys[pygame.K_d]):
                 self.player2.moveRight()
  
-            if (keys[K_a]):
+            if (keys[pygame.K_a]):
                 self.player2.moveLeft()
  
-            if (keys[K_w]):
+            if (keys[pygame.K_w]):
                 self.player2.moveUp()
  
-            if (keys[K_s]):
+            if (keys[pygame.K_s]):
                 self.player2.moveDown()
  
     
 
-            if (keys[K_ESCAPE]):
+            if (keys[pygame.K_ESCAPE]):
                 self._running = False
             
  
@@ -258,3 +296,5 @@ class App:
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()
+    
+pygame.quit()
